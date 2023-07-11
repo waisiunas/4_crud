@@ -1,6 +1,7 @@
 <?php require_once('./database/connection.php') ?>
 
 <?php
+session_start();
 $sql = "SELECT * FROM `users`";
 $result = $conn->query($sql);
 $users = $result->fetch_all(MYSQLI_ASSOC);
@@ -22,6 +23,7 @@ $users = $result->fetch_all(MYSQLI_ASSOC);
             <div class="col-9 mx-auto">
                 <div class="card">
                     <div class="card-header">
+
                         <div class="row">
                             <div class="col-6">
                                 <h3 class="m-0">Users</h3>
@@ -32,8 +34,31 @@ $users = $result->fetch_all(MYSQLI_ASSOC);
                         </div>
                     </div>
                     <div class="card-body">
-                        <table class="table table-bordered table-hover m-0">
+                        <?php
+                        if (isset($_SESSION['failure']) && !empty($_SESSION['failure'])) { ?>
+                            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                <?php
+                                echo $_SESSION['failure'];
+                                ?>
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            </div>
+                        <?php
+                            unset($_SESSION['failure']);
+                        }
 
+                        if (isset($_SESSION['success']) && !empty($_SESSION['success'])) { ?>
+                            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                                <?php
+                                echo $_SESSION['success'];
+                                ?>
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            </div>
+                        <?php
+                            unset($_SESSION['success']);
+                        }
+                        ?>
+
+                        <table class="table table-bordered table-hover m-0">
                             <?php
                             if ($result->num_rows > 0) { ?>
                                 <thead>
